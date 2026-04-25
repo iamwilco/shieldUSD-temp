@@ -125,6 +125,35 @@
       50%      { opacity: 1; }
     }
 
+    .strip-nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    .strip-nav a {
+      color: var(--mist);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+      position: relative;
+      padding: 4px 0;
+    }
+
+    .strip-nav a:hover { color: var(--snow); }
+    .strip-nav a.active { color: var(--decrypted); }
+    .strip-nav a.active::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -6px;
+      height: 1px;
+      background: var(--decrypted);
+      box-shadow: 0 0 6px var(--decrypted);
+    }
+
     main {
       position: relative;
       z-index: 1;
@@ -1197,8 +1226,12 @@
 
   <!-- ============ TOP STRIP ============ -->
   <div class="system-strip">
-    <span>shieldUSD · Brand System v0.1</span>
-    <span>Classified // Internal · Draft for Wilco</span>
+    <span>shieldUSD · v0.1</span>
+    <nav class="strip-nav">
+      <a href="index.html">Home</a>
+      <a href="brand-system.html" class="active">Brand System</a>
+      <a href="social-examples.html">Examples</a>
+    </nav>
     <span><span class="pulse"></span>Midnight_Protocol_Active</span>
   </div>
 
