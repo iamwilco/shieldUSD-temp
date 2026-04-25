@@ -36,6 +36,7 @@
       color: var(--snow);
       min-height: 100vh;
       padding: 120px 48px 120px;
+      overflow-x: hidden;
     }
 
     @keyframes pulse {
@@ -103,7 +104,7 @@
 
     /* Page chrome */
     .page-header {
-      max-width: 1400px;
+      max-width: 800px;
       margin: 0 auto 80px;
       padding-bottom: 32px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -137,7 +138,7 @@
 
     /* Section grouping */
     .group {
-      max-width: 1400px;
+      max-width: 800px;
       margin: 0 auto 96px;
     }
 
@@ -158,13 +159,16 @@
     .group-label .count { color: var(--mist); }
 
     .gallery {
-      display: grid;
-      gap: 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      width: 100%;
     }
 
-    .gallery.cols-2 { grid-template-columns: repeat(2, 1fr); }
-    .gallery.cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .gallery.cols-1 { grid-template-columns: 1fr; }
+    /* All variants stack vertically — column overrides are no-ops */
+    .gallery.cols-2,
+    .gallery.cols-3,
+    .gallery.cols-1 { display: flex; flex-direction: column; }
 
     /* Post frame */
     .post-frame {
@@ -190,6 +194,8 @@
       border: 1px solid rgba(255,255,255,0.06);
       overflow: hidden;
       position: relative;
+      width: 100%;
+      container-type: inline-size;
     }
 
     .post-caption {
@@ -229,27 +235,24 @@
     /* Story 1080×1920 */
     .post.story { width: 1080px; height: 1920px; }
 
-    /* Stage scaling — square fits 640px wide */
-    .post-stage.square { aspect-ratio: 1; }
-    .post-stage.square .post { transform: scale(calc(640 / 1080)); }
-    .post-stage.square { width: 100%; max-width: 640px; height: 640px; }
+    /* Stage scaling — uses container queries so the inner post (designed at native pixel
+       sizes) shrinks to perfectly fit whatever width its container provides.
+       100cqi = 100% of the container's inline (horizontal) size. Dividing by the post's
+       native pixel width gives the exact scale factor needed. */
 
-    .post-stage.x-header { width: 100%; aspect-ratio: 3 / 1; }
-    .post-stage.x-header .post { transform: scale(calc(900 / 1500)); width: 1500px; }
+    .post-stage.square    { aspect-ratio: 1 / 1; }
+    .post-stage.x-header  { aspect-ratio: 3 / 1; }
+    .post-stage.li-banner { aspect-ratio: 4 / 1; }
+    .post-stage.blog      { aspect-ratio: 16 / 9; }
+    .post-stage.portrait  { aspect-ratio: 4 / 5; max-width: 540px; margin: 0 auto; }
+    .post-stage.story     { aspect-ratio: 9 / 16; max-width: 360px; margin: 0 auto; }
 
-    .post-stage.li-banner { width: 100%; aspect-ratio: 4 / 1; }
-    .post-stage.li-banner .post { transform: scale(calc(900 / 1584)); width: 1584px; }
-
-    .post-stage.blog { width: 100%; aspect-ratio: 16 / 9; }
-    .post-stage.blog .post { transform: scale(calc(900 / 1600)); width: 1600px; }
-
-    .post-stage.portrait { aspect-ratio: 4 / 5; }
-    .post-stage.portrait .post { transform: scale(calc(540 / 1080)); }
-    .post-stage.portrait { width: 100%; max-width: 540px; }
-
-    .post-stage.story { aspect-ratio: 9 / 16; }
-    .post-stage.story .post { transform: scale(calc(360 / 1080)); }
-    .post-stage.story { width: 100%; max-width: 360px; }
+    .post-stage.square    .post { transform: scale(calc(100cqi / 1080px)); }
+    .post-stage.x-header  .post { transform: scale(calc(100cqi / 1500px)); }
+    .post-stage.li-banner .post { transform: scale(calc(100cqi / 1584px)); }
+    .post-stage.blog      .post { transform: scale(calc(100cqi / 1600px)); }
+    .post-stage.portrait  .post { transform: scale(calc(100cqi / 1080px)); }
+    .post-stage.story     .post { transform: scale(calc(100cqi / 1080px)); }
 
     /* ===========================================================
        SHARED POST INTERNALS
@@ -800,13 +803,15 @@
       .gallery.cols-3 { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 720px) {
-      body { padding: 80px 24px 80px; }
-      .gallery.cols-3, .gallery.cols-2 { grid-template-columns: 1fr; }
-      .post-stage.square { height: auto; }
+      body { padding: 80px 20px 80px; }
       .system-strip { padding: 12px 16px; font-size: 9px; gap: 8px; }
       .strip-nav { gap: 14px; }
       .strip-nav a { font-size: 9px; letter-spacing: 0.15em; }
       .system-strip > span:last-of-type { display: none; }
+      .page-title { font-size: 40px; }
+      .page-lede { font-size: 15px; }
+      .group { margin-bottom: 64px; }
+      .gallery { gap: 56px; }
     }
   </style>
 </head>
