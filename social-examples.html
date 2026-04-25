@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shieldUSD — Social & Editorial Examples</title>
+  <link rel="icon" href="assets/shield-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #000;
+      --ash: #0a0a0a;
+      --graphite: #141414;
+      --steel: #1f1f1f;
+      --iron: #2a2a2a;
+      --slate: #3d3d3d;
+      --smoke: #5e5e5e;
+      --mist: #888;
+      --veil: #b4b4b4;
+      --snow: #e8e8e8;
+      --paper: #fff;
+      --decrypted: #7DFFCE;
+      --compromised: #FF5C5C;
+      --display: 'Inter Tight', sans-serif;
+      --body: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--body);
+      background: #050505;
+      color: var(--snow);
+      min-height: 100vh;
+      padding: 80px 48px 120px;
+    }
+
+    /* Page chrome */
+    .page-header {
+      max-width: 1400px;
+      margin: 0 auto 80px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .page-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .page-title {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 56px;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--paper);
+    }
+
+    .page-lede {
+      font-size: 17px;
+      color: var(--veil);
+      margin-top: 20px;
+      max-width: 720px;
+      line-height: 1.55;
+    }
+
+    /* Section grouping */
+    .group {
+      max-width: 1400px;
+      margin: 0 auto 96px;
+    }
+
+    .group-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .group-label .count { color: var(--mist); }
+
+    .gallery {
+      display: grid;
+      gap: 56px;
+    }
+
+    .gallery.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .gallery.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .gallery.cols-1 { grid-template-columns: 1fr; }
+
+    /* Post frame */
+    .post-frame {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      color: var(--smoke);
+      text-transform: uppercase;
+    }
+
+    .post-meta .purpose { color: var(--veil); }
+
+    .post-stage {
+      background: #050505;
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .post-caption {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: 0.04em;
+      color: var(--mist);
+      line-height: 1.6;
+      padding: 12px 0;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+    }
+
+    .post-caption strong { color: var(--snow); font-weight: 500; }
+
+    /* ===========================================================
+       POSTS — actual pixel dimensions, scaled into stage
+       =========================================================== */
+
+    .post {
+      background: var(--ink);
+      color: var(--paper);
+      position: relative;
+      overflow: hidden;
+      transform-origin: top left;
+    }
+
+    /* Square 1080×1080 — scaled to fit stage width */
+    .post.square { width: 1080px; height: 1080px; }
+    /* Header 1500×500 */
+    .post.x-header { width: 1500px; height: 500px; }
+    /* LinkedIn banner 1584×396 */
+    .post.li-banner { width: 1584px; height: 396px; }
+    /* Blog hero 1600×900 */
+    .post.blog { width: 1600px; height: 900px; }
+    /* Vertical 1080×1350 */
+    .post.portrait { width: 1080px; height: 1350px; }
+    /* Story 1080×1920 */
+    .post.story { width: 1080px; height: 1920px; }
+
+    /* Stage scaling — square fits 640px wide */
+    .post-stage.square { aspect-ratio: 1; }
+    .post-stage.square .post { transform: scale(calc(640 / 1080)); }
+    .post-stage.square { width: 100%; max-width: 640px; height: 640px; }
+
+    .post-stage.x-header { width: 100%; aspect-ratio: 3 / 1; }
+    .post-stage.x-header .post { transform: scale(calc(900 / 1500)); width: 1500px; }
+
+    .post-stage.li-banner { width: 100%; aspect-ratio: 4 / 1; }
+    .post-stage.li-banner .post { transform: scale(calc(900 / 1584)); width: 1584px; }
+
+    .post-stage.blog { width: 100%; aspect-ratio: 16 / 9; }
+    .post-stage.blog .post { transform: scale(calc(900 / 1600)); width: 1600px; }
+
+    .post-stage.portrait { aspect-ratio: 4 / 5; }
+    .post-stage.portrait .post { transform: scale(calc(540 / 1080)); }
+    .post-stage.portrait { width: 100%; max-width: 540px; }
+
+    .post-stage.story { aspect-ratio: 9 / 16; }
+    .post-stage.story .post { transform: scale(calc(360 / 1080)); }
+    .post-stage.story { width: 100%; max-width: 360px; }
+
+    /* ===========================================================
+       SHARED POST INTERNALS
+       =========================================================== */
+
+    /* Subtle grid texture inside posts */
+    .post::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Vignette */
+    .post::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* Top telemetry strip */
+    .post-strip {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 32px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    .post-strip .pulse {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--decrypted);
+      box-shadow: 0 0 12px var(--decrypted);
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    /* Bottom signature strip */
+    .post-sig {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: 0.22em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    .post-sig img {
+      width: 32px;
+      height: 32px;
+      filter: invert(1);
+      opacity: 0.5;
+    }
+
+    /* Center stage */
+    .post-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 80px;
+      z-index: 4;
+    }
+
+    .post-center.left {
+      align-items: flex-start;
+      text-align: left;
+      padding: 0 80px;
+    }
+
+    /* Corner brackets — 32px arms */
+    .corner-frame::before,
+    .corner-frame::after,
+    .corner-frame > .br,
+    .corner-frame > .bl {
+      content: '';
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      border-color: rgba(255,255,255,0.4);
+      border-style: solid;
+      border-width: 0;
+      z-index: 6;
+    }
+    .corner-frame::before { top: 56px; left: 56px; border-top-width: 1px; border-left-width: 1px; }
+    .corner-frame::after { top: 56px; right: 56px; border-top-width: 1px; border-right-width: 1px; }
+    .corner-frame > .bl { bottom: 56px; left: 56px; border-bottom-width: 1px; border-left-width: 1px; }
+    .corner-frame > .br { bottom: 56px; right: 56px; border-bottom-width: 1px; border-right-width: 1px; }
+
+    /* ===========================================================
+       POST 01 · ANNOUNCEMENT
+       =========================================================== */
+    .post-announce .shield {
+      width: 220px;
+      height: 220px;
+      filter: invert(1);
+      opacity: 0.95;
+      margin-bottom: 64px;
+    }
+    .post-announce .wordmark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 180px;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--paper);
+    }
+    .post-announce .tagline {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: -0.015em;
+      color: var(--snow);
+      margin-top: 48px;
+    }
+    .post-announce .coming {
+      margin-top: 56px;
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: 0.4em;
+      color: var(--decrypted);
+      text-transform: uppercase;
+    }
+
+    /* ===========================================================
+       POST 02 · MANIFESTO
+       =========================================================== */
+    .post-manifesto .text {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 116px;
+      letter-spacing: -0.035em;
+      line-height: 0.95;
+      color: var(--paper);
+    }
+    .post-manifesto .text em {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--decrypted);
+    }
+    .post-manifesto .source {
+      margin-top: 80px;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.22em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    /* ===========================================================
+       POSTS 03-05 · PILLARS
+       =========================================================== */
+    .post-pillar .num {
+      position: absolute;
+      top: 200px;
+      left: 80px;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.3em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    .post-pillar .pillar-title {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 144px;
+      letter-spacing: -0.035em;
+      line-height: 0.95;
+      color: var(--paper);
+      text-align: left;
+    }
+    .post-pillar .pillar-body {
+      font-family: var(--body);
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.45;
+      color: var(--veil);
+      max-width: 720px;
+      margin-top: 56px;
+      text-align: left;
+    }
+
+    /* ===========================================================
+       POST 06 · COMPARISON
+       =========================================================== */
+    .post-compare .header {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 64px;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--paper);
+      margin-bottom: 64px;
+      text-align: center;
+    }
+    .post-compare .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 880px;
+    }
+    .post-compare .col {
+      padding: 32px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      text-align: center;
+      background: var(--ash);
+    }
+    .post-compare .col.us {
+      border-color: var(--decrypted);
+      background: rgba(125,255,206,0.03);
+    }
+    .post-compare .col-name {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--paper);
+      margin-bottom: 24px;
+    }
+    .post-compare .col.us .col-name { color: var(--decrypted); }
+    .post-compare .col-row {
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: 0.05em;
+      padding: 12px 0;
+      color: var(--smoke);
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      text-transform: uppercase;
+    }
+    .post-compare .col-row:first-of-type { border-top: none; }
+    .post-compare .col.us .col-row { color: var(--decrypted); }
+
+    /* ===========================================================
+       POST 07 · QUOTE
+       =========================================================== */
+    .post-quote .mark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 200px;
+      color: var(--decrypted);
+      opacity: 0.4;
+      line-height: 0.5;
+      margin-bottom: 24px;
+    }
+    .post-quote .text {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 56px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--paper);
+      max-width: 880px;
+    }
+    .post-quote .text .accent { color: var(--decrypted); }
+    .post-quote .attribution {
+      margin-top: 64px;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.22em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    /* ===========================================================
+       POST 08 · MILESTONE / STAT
+       =========================================================== */
+    .post-stat .pre {
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      color: var(--mist);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .post-stat .number {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 360px;
+      letter-spacing: -0.05em;
+      line-height: 0.85;
+      color: var(--paper);
+    }
+    .post-stat .number .accent { color: var(--decrypted); }
+    .post-stat .post-explain {
+      margin-top: 56px;
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 40px;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      color: var(--snow);
+      max-width: 760px;
+    }
+
+    /* ===========================================================
+       POST 09 · X HEADER
+       =========================================================== */
+    .post-xheader .post-strip { padding: 24px 56px; }
+    .post-xheader .post-sig { padding: 24px 56px; }
+    .post-xheader .post-center {
+      align-items: flex-start;
+      text-align: left;
+      padding-left: 80px;
+    }
+    .post-xheader .wordmark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 180px;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: var(--paper);
+    }
+    .post-xheader .tag {
+      margin-top: 12px;
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: -0.015em;
+      color: var(--decrypted);
+    }
+    .post-xheader .shield {
+      position: absolute;
+      right: 100px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      height: 280px;
+      filter: invert(1);
+      opacity: 0.95;
+      z-index: 4;
+    }
+
+    /* ===========================================================
+       POST 10 · LINKEDIN BANNER
+       =========================================================== */
+    .post-libanner .post-center {
+      align-items: flex-start;
+      text-align: left;
+      padding-left: 80px;
+    }
+    .post-libanner .wordmark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 110px;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: var(--paper);
+    }
+    .post-libanner .tag {
+      margin-top: 8px;
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: -0.015em;
+      color: var(--snow);
+    }
+    .post-libanner .meta {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      color: var(--mist);
+      line-height: 1.8;
+      text-transform: uppercase;
+      z-index: 4;
+    }
+    .post-libanner .meta .accent { color: var(--decrypted); }
+
+    /* ===========================================================
+       POST 11 · BLOG HERO
+       =========================================================== */
+    .post-blog .post-center {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .post-blog .category {
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      color: var(--decrypted);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .post-blog .headline {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 130px;
+      letter-spacing: -0.035em;
+      line-height: 0.95;
+      color: var(--paper);
+      max-width: 1200px;
+    }
+    .post-blog .headline em {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--decrypted);
+    }
+    .post-blog .meta {
+      margin-top: 56px;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.22em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    /* ===========================================================
+       POST 12 · PORTRAIT · PROOF RECEIPT
+       =========================================================== */
+    .post-receipt .receipt-card {
+      background: var(--graphite);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 48px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .post-receipt .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .post-receipt .receipt-id {
+      font-family: var(--mono);
+      font-size: 20px;
+      letter-spacing: 0.18em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+    .post-receipt .receipt-status {
+      font-family: var(--mono);
+      font-size: 18px;
+      color: var(--decrypted);
+      letter-spacing: 0.2em;
+    }
+    .post-receipt .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      font-family: var(--mono);
+      font-size: 22px;
+    }
+    .post-receipt .receipt-row .key {
+      color: var(--smoke);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+    .post-receipt .receipt-row .val { color: var(--snow); }
+    .post-receipt .receipt-row .val.redacted {
+      background: rgba(255,255,255,0.08);
+      padding: 4px 18px;
+      letter-spacing: 0.05em;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    }
+    .post-receipt .receipt-row .val.verified { color: var(--decrypted); }
+    .post-receipt .above-card {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 96px;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      color: var(--paper);
+      margin-bottom: 64px;
+      text-align: left;
+    }
+    .post-receipt .post-center {
+      padding-top: 200px;
+    }
+
+    /* ===========================================================
+       POST 13 · STORY (vertical)
+       =========================================================== */
+    .post-story .shield {
+      width: 320px;
+      height: 320px;
+      filter: invert(1);
+      margin-bottom: 96px;
+    }
+    .post-story .wordmark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 180px;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--paper);
+    }
+    .post-story .tagline {
+      margin-top: 64px;
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 56px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--snow);
+    }
+    .post-story .cta {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 28px 80px;
+      border: 2px solid rgba(255,255,255,0.4);
+      font-family: var(--body);
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: 0.25em;
+      color: var(--paper);
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .gallery.cols-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      body { padding: 40px 24px 80px; }
+      .gallery.cols-3, .gallery.cols-2 { grid-template-columns: 1fr; }
+      .post-stage.square { height: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-header">
+    <div class="page-label">shieldUSD · Brand System v0.1 · Examples</div>
+    <h1 class="page-title">Social & Editorial.</h1>
+    <p class="page-lede">Thirteen reference designs across square, header, banner, hero, portrait, and story formats. Each uses only the locked brand system — no custom palette, no off-system type. Suggested copy is provided beneath every example so they can ship as-is or be remixed for specific moments.</p>
+  </div>
+
+  <!-- ============ GROUP A · SQUARE SOCIAL ============ -->
+  <div class="group">
+    <div class="group-label">
+      <span>Group A · Square Social Posts</span>
+      <span class="count">1080 × 1080 · for X · LinkedIn · Instagram feed</span>
+    </div>
+
+    <div class="gallery cols-2">
+
+      <!-- POST 01 · ANNOUNCEMENT -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>01 · 1080 × 1080</span>
+          <span class="purpose">Announcement / Coming Soon</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-announce corner-frame">
+            <div class="bl"></div><div class="br"></div>
+            <div class="post-strip">
+              <span><span class="pulse"></span>Midnight_Protocol</span>
+              <span>v0.1 · Pre-launch</span>
+            </div>
+            <div class="post-center">
+              <img src="assets/shield-mark.png" alt="" class="shield">
+              <div class="wordmark">shieldUSD</div>
+              <div class="tagline">Privacy by default. Auditable by design.</div>
+              <div class="coming">— Coming Soon —</div>
+            </div>
+            <div class="post-sig">
+              <span>Issued by Moneta Digital</span>
+              <span>Built on Midnight</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> The first fiat stablecoin where every transfer is private — and every transaction is provable to the right people, in the right way, at the right time. Coming soon to Midnight.
+        </div>
+      </div>
+
+      <!-- POST 02 · MANIFESTO -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>02 · 1080 × 1080</span>
+          <span class="purpose">Manifesto / Tagline</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-manifesto">
+            <div class="post-strip">
+              <span><span class="pulse"></span>shieldUSD</span>
+              <span>Manifesto · 01</span>
+            </div>
+            <div class="post-center left">
+              <div class="text">Privacy by<br>default.<br><em>Auditable</em><br><em>by design.</em></div>
+              <div class="source">— shieldUSD on Midnight</div>
+            </div>
+            <div class="post-sig">
+              <span>Moneta Digital</span>
+              <img src="assets/shield-mark.png" alt="">
+              <span>W3i Software</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Two ideas the industry told you couldn't coexist. We built them into the same primitive.
+        </div>
+      </div>
+
+      <!-- POST 03 · PILLAR 01 -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>03 · 1080 × 1080</span>
+          <span class="purpose">Pillar Set · 01</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-pillar">
+            <div class="post-strip">
+              <span>shieldUSD · Three Pillars</span>
+              <span>01 / 03</span>
+            </div>
+            <div class="num">— Pillar 01</div>
+            <div class="post-center left" style="padding-top: 320px;">
+              <div class="pillar-title">Private<br>by default.</div>
+              <p class="pillar-body">Stealth UTXO commitments, shielded fees via DUST, and zero-knowledge proofs on every transfer. Privacy is the floor — not a feature you opt into.</p>
+            </div>
+            <div class="post-sig">
+              <span><span class="pulse"></span>Midnight_Protocol</span>
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Pillar 01 of 3. Privacy is not a setting on shieldUSD. It's the architecture.
+        </div>
+      </div>
+
+      <!-- POST 04 · PILLAR 02 -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>04 · 1080 × 1080</span>
+          <span class="purpose">Pillar Set · 02</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-pillar">
+            <div class="post-strip">
+              <span>shieldUSD · Three Pillars</span>
+              <span>02 / 03</span>
+            </div>
+            <div class="num">— Pillar 02</div>
+            <div class="post-center left" style="padding-top: 320px;">
+              <div class="pillar-title">Auditable<br>by design.</div>
+              <p class="pillar-body">Encrypted memos are produced inside the proof itself. Compliance is honest by construction — users can't lie, regulators can't snoop, the math is the witness.</p>
+            </div>
+            <div class="post-sig">
+              <span><span class="pulse"></span>Midnight_Protocol</span>
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Pillar 02 of 3. Compliance without surveillance. Visibility without exposure.
+        </div>
+      </div>
+
+      <!-- POST 05 · PILLAR 03 -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>05 · 1080 × 1080</span>
+          <span class="purpose">Pillar Set · 03</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-pillar">
+            <div class="post-strip">
+              <span>shieldUSD · Three Pillars</span>
+              <span>03 / 03</span>
+            </div>
+            <div class="num">— Pillar 03</div>
+            <div class="post-center left" style="padding-top: 320px;">
+              <div class="pillar-title">Built for<br>institutions.</div>
+              <p class="pillar-body">Co-issued through licensed entities. MiCA-aligned in the EU, Genius/Clarity-aligned in the US. Designed with regulators, not around them.</p>
+            </div>
+            <div class="post-sig">
+              <span><span class="pulse"></span>Midnight_Protocol</span>
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Pillar 03 of 3. The first stablecoin built for institutional treasury — not retrofitted from one.
+        </div>
+      </div>
+
+      <!-- POST 06 · COMPARISON -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>06 · 1080 × 1080</span>
+          <span class="purpose">Comparison vs. incumbents</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-compare">
+            <div class="post-strip">
+              <span>shieldUSD · Privacy Comparison</span>
+              <span>2026</span>
+            </div>
+            <div class="post-center">
+              <div class="header">Stablecoin<br>privacy, today.</div>
+              <div class="grid">
+                <div class="col">
+                  <div class="col-name">USDC</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                </div>
+                <div class="col">
+                  <div class="col-name">USDT</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                </div>
+                <div class="col">
+                  <div class="col-name">DAI</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                  <div class="col-row">Visible</div>
+                </div>
+                <div class="col us">
+                  <div class="col-name">shieldUSD</div>
+                  <div class="col-row">Shielded</div>
+                  <div class="col-row">Shielded</div>
+                  <div class="col-row">Shielded</div>
+                  <div class="col-row">Shielded</div>
+                </div>
+              </div>
+            </div>
+            <div class="post-sig">
+              <span>Sender · Receiver · Amount · Balance</span>
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Every USDC, USDT, and DAI transfer is public. Sender, receiver, amount, balance — all of it. shieldUSD is the first fiat stablecoin where the chain forgets, and the auditor remembers.
+        </div>
+      </div>
+
+      <!-- POST 07 · QUOTE -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>07 · 1080 × 1080</span>
+          <span class="purpose">Thought leadership / Quote</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-quote">
+            <div class="post-strip">
+              <span><span class="pulse"></span>shieldUSD</span>
+              <span>Position · 2026</span>
+            </div>
+            <div class="post-center left">
+              <div class="mark">"</div>
+              <div class="text">Privacy without compliance is <span class="accent">evasion.</span><br>Compliance without privacy is <span class="accent">surveillance.</span><br>shieldUSD is the third option.</div>
+              <div class="attribution">— Position · Q2 2026</div>
+            </div>
+            <div class="post-sig">
+              <span>Built on Midnight</span>
+              <img src="assets/shield-mark.png" alt="">
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> The conversation has been stuck in a false binary for a decade. We're done with that conversation.
+        </div>
+      </div>
+
+      <!-- POST 08 · MILESTONE -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>08 · 1080 × 1080</span>
+          <span class="purpose">Milestone / Stat reveal</span>
+        </div>
+        <div class="post-stage square">
+          <div class="post square post-stat">
+            <div class="post-strip">
+              <span>shieldUSD · Launch Window</span>
+              <span>Q2 · 2026</span>
+            </div>
+            <div class="post-center">
+              <div class="pre">— First stablecoin on Midnight —</div>
+              <div class="number"><span class="accent">01</span></div>
+              <div class="post-explain">The only fiat-backed, privacy-preserving, regulator-aligned stablecoin shipping in 2026.</div>
+            </div>
+            <div class="post-sig">
+              <span><span class="pulse"></span>Live on Midnight</span>
+              <span>Issued by Moneta Digital</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> One stablecoin. One chain. One regulatory model that works on both sides of the Atlantic.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ GROUP B · HEADERS / BANNERS ============ -->
+  <div class="group">
+    <div class="group-label">
+      <span>Group B · Headers & Banners</span>
+      <span class="count">X header 1500×500 · LinkedIn 1584×396</span>
+    </div>
+
+    <div class="gallery cols-1">
+
+      <!-- POST 09 · X HEADER -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>09 · 1500 × 500</span>
+          <span class="purpose">X / Twitter profile header</span>
+        </div>
+        <div class="post-stage x-header">
+          <div class="post x-header post-xheader">
+            <div class="post-strip"><span><span class="pulse"></span>Midnight_Protocol_Active</span><span>@Shield_USD</span></div>
+            <div class="post-center">
+              <div class="wordmark">shieldUSD</div>
+              <div class="tag">Privacy by default. Auditable by design.</div>
+            </div>
+            <img src="assets/shield-mark.png" alt="" class="shield">
+            <div class="post-sig"><span>Moneta Digital</span><span>Built on Midnight</span></div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested bio.</strong> Privacy by default. Auditable by design. The first fiat stablecoin on @MidnightNtwrk. Issued by @MonetaDigital. Built by @W3iSoftware.
+        </div>
+      </div>
+
+      <!-- POST 10 · LINKEDIN BANNER -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>10 · 1584 × 396</span>
+          <span class="purpose">LinkedIn company / personal banner</span>
+        </div>
+        <div class="post-stage li-banner">
+          <div class="post li-banner post-libanner">
+            <div class="post-strip"><span><span class="pulse"></span>shieldUSD</span><span>Pre-launch · 2026</span></div>
+            <div class="post-center">
+              <div class="wordmark">shieldUSD</div>
+              <div class="tag">A new standard for confidential settlement.</div>
+            </div>
+            <div class="meta">
+              <span class="accent">Issued by</span> Moneta Digital<br>
+              <span class="accent">Built on</span> Midnight<br>
+              <span class="accent">Tech by</span> W3i Software
+            </div>
+            <div class="post-sig"><span>shieldUSD.com</span><span>@Shield_USD</span></div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Use behind your headshot for the launch window. Switch to the Manifesto post for milestone moments.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ GROUP C · EDITORIAL ============ -->
+  <div class="group">
+    <div class="group-label">
+      <span>Group C · Editorial / Long-form</span>
+      <span class="count">Blog hero 1600×900 · for press · Medium · newsletter</span>
+    </div>
+
+    <div class="gallery cols-1">
+
+      <!-- POST 11 · BLOG HERO -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>11 · 1600 × 900</span>
+          <span class="purpose">Blog post hero / press cover</span>
+        </div>
+        <div class="post-stage blog">
+          <div class="post blog post-blog corner-frame">
+            <div class="bl"></div><div class="br"></div>
+            <div class="post-strip">
+              <span><span class="pulse"></span>shieldUSD · Editorial</span>
+              <span>Issue 01 · April 2026</span>
+            </div>
+            <div class="post-center">
+              <div class="category">— Position Paper —</div>
+              <div class="headline">Why <em>compliant confidentiality</em> is the next stablecoin standard.</div>
+              <div class="meta">By Wilco van de Burgwal · 12 min read · shieldUSD.com</div>
+            </div>
+            <div class="post-sig">
+              <span>Moneta Digital · W3i Software</span>
+              <span>Built on Midnight</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Editorial template.</strong> Swap the headline and category for each piece. Use Decrypted accent on the most loaded word in the headline — never more than two words per headline.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ GROUP D · PORTRAIT / STORY ============ -->
+  <div class="group">
+    <div class="group-label">
+      <span>Group D · Portrait & Story Formats</span>
+      <span class="count">IG portrait 1080×1350 · IG/X story 1080×1920</span>
+    </div>
+
+    <div class="gallery cols-2">
+
+      <!-- POST 12 · PORTRAIT · PROOF RECEIPT -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>12 · 1080 × 1350</span>
+          <span class="purpose">Portrait · Proof Receipt</span>
+        </div>
+        <div class="post-stage portrait">
+          <div class="post portrait post-receipt">
+            <div class="post-strip">
+              <span><span class="pulse"></span>shieldUSD</span>
+              <span>Receipt · 0x7f9a</span>
+            </div>
+            <div class="post-center">
+              <div class="above-card">A receipt that<br>reveals nothing.<br>And proves<br>everything.</div>
+              <div class="receipt-card">
+                <div class="receipt-header">
+                  <div class="receipt-id">Tx · 0x7f9a4d2b</div>
+                  <div class="receipt-status">VERIFIED</div>
+                </div>
+                <div class="receipt-row"><span class="key">From</span><span class="val redacted">█████████████</span></div>
+                <div class="receipt-row"><span class="key">To</span><span class="val redacted">█████████████</span></div>
+                <div class="receipt-row"><span class="key">Amount</span><span class="val redacted">████████</span></div>
+                <div class="receipt-row"><span class="key">Memo</span><span class="val verified">Auditor-readable</span></div>
+                <div class="receipt-row"><span class="key">Proof</span><span class="val">ZK · 0x4d2b…</span></div>
+              </div>
+            </div>
+            <div class="post-sig">
+              <span>Built on Midnight</span>
+              <img src="assets/shield-mark.png" alt="">
+              <span>shieldUSD</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Suggested caption.</strong> Anyone can read this transaction. Nobody can see what's in it. Except the auditor — exactly when they need to.
+        </div>
+      </div>
+
+      <!-- POST 13 · STORY -->
+      <div class="post-frame">
+        <div class="post-meta">
+          <span>13 · 1080 × 1920</span>
+          <span class="purpose">Story · IG / X / Snap vertical</span>
+        </div>
+        <div class="post-stage story">
+          <div class="post story post-story">
+            <div class="post-strip" style="padding: 56px;">
+              <span><span class="pulse"></span>shieldUSD</span>
+              <span>Coming · Q2 26</span>
+            </div>
+            <div class="post-center">
+              <img src="assets/shield-mark.png" alt="" class="shield">
+              <div class="wordmark">shieldUSD</div>
+              <div class="tagline">A new standard for<br>confidential settlement.</div>
+            </div>
+            <div class="cta">Stay Notified</div>
+            <div class="post-sig" style="padding: 56px;">
+              <span>Moneta Digital</span>
+              <span>Midnight</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-caption">
+          <strong>Story format.</strong> Use as Instagram / X / Snap story or as a teaser slide in pitch decks. Swap the CTA copy for moment-specific calls.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <div class="group" style="margin-top: 120px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--smoke); text-transform: uppercase;">
+      <div>shieldUSD · Brand System v0.1 · Examples · 2026-04-25</div>
+      <div>13 designs · 6 formats · Internal preview</div>
+    </div>
+  </div>
+
+</body>
+</html>

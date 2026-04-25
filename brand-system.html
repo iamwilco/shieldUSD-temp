@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shieldUSD — Brand System v0.1</title>
+  <link rel="icon" href="assets/shield-mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===========================================================
+       shieldUSD — Brand System Reference
+       Tokens · Type · Mark · Components · Voice · Secret Layer
+       =========================================================== */
+
+    :root {
+      /* Monochrome scale */
+      --ink:       #000000;
+      --ash:       #0a0a0a;
+      --graphite:  #141414;
+      --steel:     #1f1f1f;
+      --iron:      #2a2a2a;
+      --slate:     #3d3d3d;
+      --smoke:     #5e5e5e;
+      --mist:      #888888;
+      --veil:      #b4b4b4;
+      --snow:      #e8e8e8;
+      --paper:     #ffffff;
+
+      /* Signal colors (used SPARINGLY) */
+      --decrypted: #7DFFCE;   /* verified · proof valid · privacy active */
+      --compromised: #FF5C5C; /* burn-timer · failed · alert */
+
+      /* Type */
+      --display: 'Inter Tight', -apple-system, sans-serif;
+      --body:    'Inter', -apple-system, sans-serif;
+      --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+      /* Geometry */
+      --grid: 50px;
+      --hairline: 1px solid rgba(255,255,255,0.08);
+      --hairline-strong: 1px solid rgba(255,255,255,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      font-weight: 300;
+      background: var(--ink);
+      color: var(--snow);
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Animated grid backdrop — global texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: var(--grid) var(--grid);
+      pointer-events: none;
+      z-index: 0;
+      animation: gridDrift 40s linear infinite;
+    }
+
+    /* Vignette */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gridDrift {
+      from { background-position: 0 0, 0 0; }
+      to   { background-position: var(--grid) var(--grid), var(--grid) var(--grid); }
+    }
+
+    /* ===========================================================
+       LAYOUT
+       =========================================================== */
+
+    .system-strip {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 28px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: var(--hairline);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    .system-strip .pulse {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--decrypted);
+      box-shadow: 0 0 8px var(--decrypted);
+      margin-right: 8px;
+      animation: pulse 2s ease-in-out infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 1; }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 64px;
+    }
+
+    section {
+      padding: 140px 0;
+      border-top: var(--hairline);
+      position: relative;
+    }
+
+    section:first-of-type { border-top: none; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--smoke);
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: clamp(48px, 6vw, 88px);
+      letter-spacing: -0.025em;
+      line-height: 0.95;
+      color: var(--paper);
+      margin-bottom: 32px;
+    }
+
+    .section-lede {
+      font-family: var(--body);
+      font-weight: 300;
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--veil);
+      max-width: 640px;
+      margin-bottom: 80px;
+    }
+
+    /* ===========================================================
+       HERO
+       =========================================================== */
+
+    .hero {
+      min-height: 100vh;
+      padding-top: 120px;
+      padding-bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      border-top: none;
+    }
+
+    .hero-mark {
+      width: 96px;
+      height: 96px;
+      filter: invert(1);
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fadeUp 1.2s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-wordmark {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: clamp(80px, 12vw, 180px);
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: var(--paper);
+      opacity: 0;
+      animation: fadeUp 1.2s 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-wordmark em {
+      font-style: normal;
+      font-weight: 300;
+    }
+
+    .hero-tagline {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: clamp(24px, 2.8vw, 38px);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      color: var(--snow);
+      max-width: 720px;
+      margin-top: 56px;
+      opacity: 0;
+      animation: fadeUp 1.2s 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-sub {
+      font-family: var(--body);
+      font-weight: 300;
+      font-size: 17px;
+      color: var(--mist);
+      margin-top: 20px;
+      max-width: 560px;
+      opacity: 0;
+      animation: fadeUp 1.2s 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-meta {
+      margin-top: 96px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      display: flex;
+      gap: 32px;
+      opacity: 0;
+      animation: fadeUp 1.2s 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-meta span::before {
+      content: '◇';
+      margin-right: 10px;
+      color: var(--slate);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===========================================================
+       PILLARS
+       =========================================================== */
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: var(--hairline);
+    }
+
+    .pillar {
+      background: var(--ink);
+      padding: 56px 40px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background 0.4s ease;
+    }
+
+    .pillar:hover { background: var(--ash); }
+
+    .pillar-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--smoke);
+    }
+
+    .pillar-title {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--paper);
+      margin: 60px 0 20px;
+    }
+
+    .pillar-body {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--veil);
+    }
+
+    /* ===========================================================
+       MARK & WORDMARK
+       =========================================================== */
+
+    .mark-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: var(--hairline);
+    }
+
+    .mark-tile {
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 360px;
+      position: relative;
+    }
+
+    .mark-tile.dark { background: var(--ink); }
+    .mark-tile.light { background: var(--paper); }
+
+    .mark-tile img {
+      width: 140px;
+      height: 140px;
+    }
+
+    .mark-tile.dark img { filter: invert(1); }
+
+    .mark-tile-label {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .mark-tile.dark .mark-tile-label { color: var(--smoke); }
+    .mark-tile.light .mark-tile-label { color: #888; }
+
+    .spec-list {
+      margin-top: 64px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      padding: 40px 0;
+      border-top: var(--hairline);
+      border-bottom: var(--hairline);
+    }
+
+    .spec-item-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .spec-item-value {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 22px;
+      color: var(--paper);
+      letter-spacing: -0.01em;
+    }
+
+    .spec-item-note {
+      font-size: 13px;
+      color: var(--mist);
+      margin-top: 8px;
+    }
+
+    /* Wordmark display */
+    .wordmark-display {
+      padding: 100px 60px;
+      background: var(--ash);
+      border: var(--hairline);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .wordmark-large {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: clamp(72px, 10vw, 140px);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--paper);
+    }
+
+    .wordmark-rule {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: center;
+      max-width: 720px;
+      padding-top: 32px;
+      border-top: var(--hairline);
+      width: 100%;
+    }
+
+    .wordmark-rule .key {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+    }
+
+    .wordmark-rule .val {
+      font-family: var(--body);
+      font-size: 14px;
+      color: var(--veil);
+    }
+
+    .wordmark-rule .val .yes { color: var(--decrypted); font-family: var(--mono); }
+    .wordmark-rule .val .no { color: var(--compromised); font-family: var(--mono); text-decoration: line-through; }
+
+    .lockup-row {
+      margin-top: 48px;
+      padding: 60px;
+      background: var(--graphite);
+      border: var(--hairline);
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .lockup-row img {
+      width: 64px;
+      height: 64px;
+      filter: invert(1);
+    }
+
+    .lockup-row .lockup-text {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: 56px;
+      letter-spacing: -0.03em;
+      color: var(--paper);
+    }
+
+    .lockup-row .lockup-bar {
+      width: 1px;
+      height: 48px;
+      background: var(--slate);
+      margin: 0 8px;
+    }
+
+    .lockup-row .lockup-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    /* ===========================================================
+       PALETTE
+       =========================================================== */
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      border: var(--hairline);
+      margin-bottom: 56px;
+    }
+
+    .swatch {
+      aspect-ratio: 1 / 1.4;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .swatch-name { font-weight: 500; }
+    .swatch-hex { opacity: 0.65; }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: var(--hairline);
+    }
+
+    .signal {
+      padding: 48px 40px;
+      background: var(--ink);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .signal-swatch {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    .signal-swatch.decrypted {
+      background: var(--decrypted);
+      box-shadow: 0 0 24px rgba(125, 255, 206, 0.4);
+    }
+
+    .signal-swatch.compromised {
+      background: var(--compromised);
+      box-shadow: 0 0 24px rgba(255, 92, 92, 0.4);
+    }
+
+    .signal-name {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 28px;
+      letter-spacing: -0.015em;
+      color: var(--paper);
+    }
+
+    .signal-hex {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--mist);
+      letter-spacing: 0.1em;
+    }
+
+    .signal-rule {
+      font-family: var(--body);
+      font-size: 14px;
+      color: var(--veil);
+      line-height: 1.55;
+      max-width: 320px;
+      margin-top: 16px;
+    }
+
+    /* ===========================================================
+       TYPOGRAPHY
+       =========================================================== */
+
+    .type-block {
+      padding: 56px 0;
+      border-top: var(--hairline);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+    }
+
+    .type-block:first-of-type { border-top: none; padding-top: 0; }
+
+    .type-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+
+    .type-meta strong {
+      display: block;
+      color: var(--paper);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .type-sample-display {
+      font-family: var(--display);
+      font-weight: 200;
+      font-size: clamp(56px, 7vw, 96px);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      color: var(--paper);
+    }
+
+    .type-sample-body {
+      font-family: var(--body);
+      font-weight: 300;
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--snow);
+      max-width: 640px;
+    }
+
+    .type-sample-mono {
+      font-family: var(--mono);
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      color: var(--snow);
+      line-height: 1.7;
+    }
+
+    .type-sample-mono .accent { color: var(--decrypted); }
+    .type-sample-mono .label { color: var(--smoke); }
+
+    /* ===========================================================
+       MOTION
+       =========================================================== */
+
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: var(--hairline);
+    }
+
+    .motion-tile {
+      background: var(--ink);
+      padding: 48px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motion-tile-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+    }
+
+    .motion-tile-name {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      margin-top: 16px;
+    }
+
+    .motion-tile-desc {
+      font-size: 14px;
+      color: var(--veil);
+      margin-top: 12px;
+      max-width: 360px;
+      line-height: 1.55;
+    }
+
+    .motion-demo {
+      margin-top: 32px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    /* Selective Disclosure demo */
+    .selective-demo {
+      width: 100%;
+      height: 80px;
+      background: var(--graphite);
+      position: relative;
+      overflow: hidden;
+      cursor: crosshair;
+      border: var(--hairline);
+    }
+
+    .selective-demo::before {
+      content: 'CONFIDENTIAL · USDM RESERVE · $147,200,000.00 · MOVE CURSOR TO REVEAL';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--snow);
+    }
+
+    .selective-demo .mask {
+      position: absolute;
+      inset: 0;
+      background: var(--graphite);
+      transition: opacity 0.2s;
+    }
+
+    /* Redacted reveal demo */
+    .redacted-demo {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 56px;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      cursor: pointer;
+    }
+
+    .redacted-demo .char {
+      display: inline-block;
+      position: relative;
+      animation: redactReveal 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .redacted-demo .char::before {
+      content: '█';
+      position: absolute;
+      inset: 0;
+      color: var(--snow);
+      animation: redactFade 0.8s ease-out forwards;
+      animation-delay: inherit;
+    }
+
+    @keyframes redactReveal {
+      0%   { opacity: 0; filter: blur(20px); transform: scaleX(0.3); }
+      50%  { opacity: 0.5; filter: blur(10px); }
+      100% { opacity: 1; filter: blur(0); transform: scaleX(1); }
+    }
+
+    @keyframes redactFade {
+      0%, 50% { opacity: 1; }
+      100%    { opacity: 0; }
+    }
+
+    /* Privacy bars dissolve */
+    .bars-demo {
+      width: 100%;
+      position: relative;
+      padding: 12px 0;
+    }
+
+    .bars-demo .bars-text {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: -0.015em;
+      color: var(--paper);
+    }
+
+    .bars-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+
+    .bar {
+      height: 2px;
+      background: var(--paper);
+      animation: barDissolve 1.5s ease-out forwards;
+      transform-origin: left center;
+    }
+
+    @keyframes barDissolve {
+      0%   { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+    /* Scan line demo */
+    .scan-demo {
+      width: 100%;
+      height: 80px;
+      background: var(--graphite);
+      position: relative;
+      overflow: hidden;
+      border: var(--hairline);
+    }
+
+    .scan-demo::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--decrypted), transparent);
+      animation: scanLine 3s ease-in-out infinite;
+    }
+
+    @keyframes scanLine {
+      0%, 100% { top: 0; opacity: 0; }
+      10%      { opacity: 1; }
+      90%      { opacity: 1; }
+      100%     { top: 100%; opacity: 0; }
+    }
+
+    /* ===========================================================
+       COMPONENTS
+       =========================================================== */
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .component-tile {
+      padding: 48px;
+      background: var(--ash);
+      border: var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      min-height: 280px;
+    }
+
+    .component-tile.full { grid-column: 1 / -1; }
+
+    .component-meta {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+    }
+
+    .component-name {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+      margin-top: -16px;
+    }
+
+    .component-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 0;
+    }
+
+    /* CTA Button */
+    .cta {
+      display: inline-block;
+      padding: 16px 40px;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--paper);
+      text-decoration: none;
+      font-family: var(--body);
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      position: relative;
+      transition: border-color 0.3s, color 0.5s;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 0;
+    }
+
+    .cta:hover { border-color: var(--paper); color: var(--ink); }
+    .cta:hover::before { transform: translateX(0); }
+
+    .cta span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta .corner {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba(255,255,255,0.6);
+      z-index: 2;
+    }
+
+    .cta .corner.tl { top: -4px; left: -4px; border-right: none; border-bottom: none; }
+    .cta .corner.tr { top: -4px; right: -4px; border-left: none; border-bottom: none; }
+    .cta .corner.bl { bottom: -4px; left: -4px; border-right: none; border-top: none; }
+    .cta .corner.br { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+
+    /* Status pill */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border: 1px solid rgba(125, 255, 206, 0.3);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--decrypted);
+      background: rgba(125, 255, 206, 0.04);
+    }
+
+    .status-pill .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--decrypted);
+      box-shadow: 0 0 8px var(--decrypted);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* Encrypted badge */
+    .encrypted-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.3);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--snow);
+    }
+
+    /* Card with redacted line items */
+    .privacy-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--graphite);
+      border: var(--hairline);
+      padding: 28px;
+    }
+
+    .privacy-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: var(--hairline);
+    }
+
+    .privacy-card-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    .privacy-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .privacy-row:last-child { border-bottom: none; }
+    .privacy-row .key { color: var(--smoke); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10.5px; }
+    .privacy-row .val { color: var(--snow); }
+    .privacy-row .val.redacted {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 12px;
+      letter-spacing: 0.05em;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      user-select: none;
+    }
+    .privacy-row .val.verified { color: var(--decrypted); }
+
+    /* ===========================================================
+       SECRET LAYER
+       =========================================================== */
+
+    .secret-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: var(--hairline);
+    }
+
+    .secret-tile {
+      background: var(--ink);
+      padding: 36px 28px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .secret-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+    }
+
+    .secret-name {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: -0.015em;
+      color: var(--paper);
+      margin-top: 12px;
+    }
+
+    .secret-desc {
+      font-size: 13px;
+      color: var(--veil);
+      line-height: 1.55;
+      margin-top: 8px;
+    }
+
+    /* ===========================================================
+       VOICE
+       =========================================================== */
+
+    .voice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .voice-block {
+      padding: 40px;
+      background: var(--ash);
+      border: var(--hairline);
+    }
+
+    .voice-block h4 {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    .voice-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .voice-list li {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      color: var(--snow);
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .voice-list li::before {
+      position: absolute;
+      left: 0;
+      font-weight: 500;
+    }
+
+    .voice-list.do li::before { content: '+'; color: var(--decrypted); }
+    .voice-list.dont li::before { content: '×'; color: var(--compromised); }
+
+    .copy-samples {
+      margin-top: 64px;
+      padding: 48px;
+      background: var(--graphite);
+      border: var(--hairline);
+    }
+
+    .copy-sample {
+      padding: 24px 0;
+      border-bottom: var(--hairline);
+    }
+
+    .copy-sample:last-child { border-bottom: none; }
+
+    .copy-context {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      color: var(--smoke);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .copy-headline {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      line-height: 1.1;
+    }
+
+    .copy-body {
+      font-size: 16px;
+      color: var(--veil);
+      margin-top: 10px;
+      max-width: 640px;
+    }
+
+    /* ===========================================================
+       CO-MARKS
+       =========================================================== */
+
+    .comark-block {
+      padding: 64px;
+      background: var(--ash);
+      border: var(--hairline);
+      text-align: center;
+    }
+
+    .comark-line {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      color: var(--mist);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    .comark-line .div {
+      color: var(--slate);
+      margin: 0 14px;
+    }
+
+    /* ===========================================================
+       FOOTER
+       =========================================================== */
+
+    footer {
+      margin-top: 80px;
+      padding: 40px 0 80px;
+      border-top: var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--smoke);
+      text-transform: uppercase;
+    }
+
+    footer img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+      opacity: 0.5;
+    }
+
+    /* ===========================================================
+       RESPONSIVE
+       =========================================================== */
+
+    @media (max-width: 900px) {
+      main { padding: 0 28px; }
+      section { padding: 100px 0; }
+      .pillars, .mark-grid, .components-grid, .voice-grid, .motion-grid { grid-template-columns: 1fr; }
+      .secret-grid { grid-template-columns: 1fr 1fr; }
+      .palette-grid { grid-template-columns: repeat(4, 1fr); }
+      .type-block { grid-template-columns: 1fr; gap: 20px; }
+      .lockup-row { flex-direction: column; align-items: flex-start; }
+      .system-strip { font-size: 9px; padding: 12px 16px; gap: 12px; }
+      .system-strip span:nth-child(2) { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============ TOP STRIP ============ -->
+  <div class="system-strip">
+    <span>shieldUSD · Brand System v0.1</span>
+    <span>Classified // Internal · Draft for Wilco</span>
+    <span><span class="pulse"></span>Midnight_Protocol_Active</span>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <img src="assets/shield-mark.png" alt="shieldUSD mark" class="hero-mark">
+      <div class="hero-wordmark">shield<em>USD</em></div>
+      <div class="hero-tagline">Privacy by default.<br>Auditable by design.</div>
+      <div class="hero-sub">A fiat-backed stablecoin where every transfer is private — and every transaction is provable to the right people, in the right way, at the right time.</div>
+      <div class="hero-meta">
+        <span>Issued by Moneta Digital</span>
+        <span>Built on Midnight</span>
+        <span>Tech by W3i Software</span>
+      </div>
+    </section>
+
+    <!-- ============ PILLARS ============ -->
+    <section>
+      <div class="section-label">01 · The Story</div>
+      <h2 class="section-title">Three pillars.<br>One product.</h2>
+      <p class="section-lede">Every page, every deck, every asset returns to these. Privacy without compliance is evasion. Compliance without privacy is surveillance. shieldUSD is the third option.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-num">Pillar 01</div>
+          <div>
+            <div class="pillar-title">Private<br>by default.</div>
+            <p class="pillar-body">Stealth UTXO commitments, shielded fees via DUST, and zero-knowledge proofs on every transfer. Privacy is the floor, not a feature.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">Pillar 02</div>
+          <div>
+            <div class="pillar-title">Auditable<br>by design.</div>
+            <p class="pillar-body">Encrypted auditor memos are produced inside the proof itself. Compliance is honest by construction — users can't lie, regulators can't snoop.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">Pillar 03</div>
+          <div>
+            <div class="pillar-title">Built for<br>institutions.</div>
+            <p class="pillar-body">Co-issued through licensed entities. MiCA-aligned in the EU, Genius/Clarity-aligned in the US. Designed with regulators, not around them.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MARK ============ -->
+    <section>
+      <div class="section-label">02 · The Mark</div>
+      <h2 class="section-title">A shield with<br>a keyhole.</h2>
+      <p class="section-lede">The shield says protection. The keyhole says access — privacy isn't absence of access, it's controlled access. Together: the only fiat stablecoin where you decide who sees what.</p>
+
+      <div class="mark-grid">
+        <div class="mark-tile dark">
+          <img src="assets/shield-mark.png" alt="Mark on dark">
+          <div class="mark-tile-label">Primary · On Ink</div>
+        </div>
+        <div class="mark-tile light">
+          <img src="assets/shield-mark.png" alt="Mark on light">
+          <div class="mark-tile-label">Inverse · On Paper</div>
+        </div>
+      </div>
+
+      <div class="spec-list">
+        <div>
+          <div class="spec-item-label">Minimum size</div>
+          <div class="spec-item-value">24px</div>
+          <div class="spec-item-note">Smaller than this, the keyhole disappears.</div>
+        </div>
+        <div>
+          <div class="spec-item-label">Clear space</div>
+          <div class="spec-item-value">¼ mark height</div>
+          <div class="spec-item-note">Measured from outer shield silhouette.</div>
+        </div>
+        <div>
+          <div class="spec-item-label">Color</div>
+          <div class="spec-item-value">Mono only</div>
+          <div class="spec-item-note">Never tint. Never gradient. Ink or Paper.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORDMARK ============ -->
+    <section>
+      <div class="section-label">03 · The Wordmark</div>
+      <h2 class="section-title">A name that<br>encodes the rule.</h2>
+      <p class="section-lede">Lowercase <em>shield</em> — the privacy layer is quiet, ambient, infrastructural. Uppercase <em>USD</em> — the value is loud, denominated, real. The capitalization is the product positioning in nine characters.</p>
+
+      <div class="wordmark-display">
+        <div class="wordmark-large">shieldUSD</div>
+        <div class="wordmark-rule">
+          <div class="key">Correct</div>
+          <div class="val"><span class="yes">shieldUSD</span> &nbsp;·&nbsp; lowercase <em>s</em>, uppercase <em>USD</em>, no space, no hyphen</div>
+          <div class="key">Avoid</div>
+          <div class="val"><span class="no">ShieldUSD</span> &nbsp; <span class="no">Shield USD</span> &nbsp; <span class="no">shield-usd</span> &nbsp; <span class="no">$shieldUSD</span></div>
+          <div class="key">Tone</div>
+          <div class="val">Set in Inter Tight Light/Thin. Letter-spacing −0.04em at display. Never bold. Never italic.</div>
+        </div>
+      </div>
+
+      <div class="lockup-row">
+        <img src="assets/shield-mark.png" alt="">
+        <div class="lockup-bar"></div>
+        <div class="lockup-text">shieldUSD</div>
+        <div style="flex: 1"></div>
+        <div class="lockup-meta">Horizontal Lockup<br>Mark + Wordmark · 1 : 1.6</div>
+      </div>
+    </section>
+
+    <!-- ============ PALETTE ============ -->
+    <section>
+      <div class="section-label">04 · Palette</div>
+      <h2 class="section-title">Monochrome<br>+ two signals.</h2>
+      <p class="section-lede">The brand is grayscale. Discipline is the point — when everything else in fintech is purple gradients and electric blue, restraint reads as institutional. Two signal colors only, used like indicator lights, not decoration.</p>
+
+      <div class="palette-grid">
+        <div class="swatch" style="background: #000000; color: #fff;"><div class="swatch-name">Ink</div><div class="swatch-hex">#000000</div></div>
+        <div class="swatch" style="background: #0a0a0a; color: #fff;"><div class="swatch-name">Ash</div><div class="swatch-hex">#0a0a0a</div></div>
+        <div class="swatch" style="background: #141414; color: #fff;"><div class="swatch-name">Graphite</div><div class="swatch-hex">#141414</div></div>
+        <div class="swatch" style="background: #1f1f1f; color: #fff;"><div class="swatch-name">Steel</div><div class="swatch-hex">#1f1f1f</div></div>
+        <div class="swatch" style="background: #2a2a2a; color: #fff;"><div class="swatch-name">Iron</div><div class="swatch-hex">#2a2a2a</div></div>
+        <div class="swatch" style="background: #3d3d3d; color: #fff;"><div class="swatch-name">Slate</div><div class="swatch-hex">#3d3d3d</div></div>
+        <div class="swatch" style="background: #5e5e5e; color: #fff;"><div class="swatch-name">Smoke</div><div class="swatch-hex">#5e5e5e</div></div>
+        <div class="swatch" style="background: #888888; color: #000;"><div class="swatch-name">Mist</div><div class="swatch-hex">#888888</div></div>
+        <div class="swatch" style="background: #b4b4b4; color: #000;"><div class="swatch-name">Veil</div><div class="swatch-hex">#b4b4b4</div></div>
+        <div class="swatch" style="background: #e8e8e8; color: #000;"><div class="swatch-name">Snow</div><div class="swatch-hex">#e8e8e8</div></div>
+        <div class="swatch" style="background: #ffffff; color: #000;"><div class="swatch-name">Paper</div><div class="swatch-hex">#ffffff</div></div>
+      </div>
+
+      <div class="signal-row">
+        <div class="signal">
+          <div class="signal-swatch decrypted"></div>
+          <div>
+            <div class="signal-name">Decrypted</div>
+            <div class="signal-hex">#7DFFCE</div>
+            <p class="signal-rule">Phosphor cyan-green. Used <em>only</em> to signal: proof verified, privacy active, audit unlocked. Never in body copy. Never as a brand surface. Think indicator light, not paint.</p>
+          </div>
+        </div>
+        <div class="signal">
+          <div class="signal-swatch compromised"></div>
+          <div>
+            <div class="signal-name">Compromised</div>
+            <div class="signal-hex">#FF5C5C</div>
+            <p class="signal-rule">Used <em>only</em> for: burn-timer expired, proof failed, freeze triggered, alert state. Pulses, doesn't decorate. If it's not a real warning, don't use it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TYPOGRAPHY ============ -->
+    <section>
+      <div class="section-label">05 · Typography</div>
+      <h2 class="section-title">Three voices.<br>Strict roles.</h2>
+      <p class="section-lede">Inter Tight is the institutional headline — confident, geometric, light. Inter is the substrate — quiet, readable, neutral. JetBrains Mono is the system speaking — addresses, status, telemetry. Never mix the roles.</p>
+
+      <div class="type-block">
+        <div class="type-meta">
+          <strong>Inter Tight</strong>
+          Display · Headlines<br>
+          Weights 200 / 300<br>
+          Tracking −0.025 to −0.04em<br>
+          Line-height 0.95
+        </div>
+        <div class="type-sample-display">Confidential settlement,<br>finally legitimate.</div>
+      </div>
+
+      <div class="type-block">
+        <div class="type-meta">
+          <strong>Inter</strong>
+          Body · Long-form<br>
+          Weight 300 / 400<br>
+          Size 15–19px<br>
+          Line-height 1.55
+        </div>
+        <div class="type-sample-body">
+          Every shieldUSD transfer is private by default. The amount, the sender, the receiver — all hidden behind a zero-knowledge proof. But every transfer also produces an encrypted memo readable only by a designated auditor. Compliance and confidentiality, written into the same act.
+        </div>
+      </div>
+
+      <div class="type-block">
+        <div class="type-meta">
+          <strong>JetBrains Mono</strong>
+          System · Chrome<br>
+          Weight 300 / 400<br>
+          Size 10.5–14px<br>
+          Tracking 0.05–0.22em (UPPERCASE)
+        </div>
+        <div class="type-sample-mono">
+          <span class="label">[ MIDNIGHT_PROTOCOL ]</span> &nbsp; <span class="accent">ACTIVE</span><br>
+          <span class="label">[ TX ]</span> &nbsp; 0x7f9a · 4d2b · ████ · ████<br>
+          <span class="label">[ PROOF ]</span> &nbsp; <span class="accent">ZK · VERIFIED</span><br>
+          <span class="label">[ AMOUNT ]</span> &nbsp; ████████ &nbsp; <span class="label">SHIELDED</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MOTION ============ -->
+    <section>
+      <div class="section-label">06 · Motion Language</div>
+      <h2 class="section-title">The brand<br>performs privacy.</h2>
+      <p class="section-lede">Four signature motions. Each one is the privacy mechanism made visible. Use them for hero moments — never decoratively, never on every element.</p>
+
+      <div class="motion-grid">
+
+        <div class="motion-tile">
+          <div>
+            <div class="motion-tile-label">Motion 01</div>
+            <div class="motion-tile-name">Selective Disclosure</div>
+            <p class="motion-tile-desc">A spotlight follows the cursor. The page reveals only what you point at. The mechanism becomes the metaphor.</p>
+          </div>
+          <div class="motion-demo">
+            <div class="selective-demo" id="selective-demo">
+              <div class="mask" id="selective-mask"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="motion-tile">
+          <div>
+            <div class="motion-tile-label">Motion 02</div>
+            <div class="motion-tile-name">Redacted Reveal</div>
+            <p class="motion-tile-desc">Each character begins as a redaction block. The block dissolves; the letter emerges. Declassification, choreographed.</p>
+          </div>
+          <div class="motion-demo">
+            <div class="redacted-demo" id="redacted-demo">
+              <span class="char" style="animation-delay: 0s">s</span><span class="char" style="animation-delay: 0.1s">h</span><span class="char" style="animation-delay: 0.2s">i</span><span class="char" style="animation-delay: 0.3s">e</span><span class="char" style="animation-delay: 0.4s">l</span><span class="char" style="animation-delay: 0.5s">d</span><span class="char" style="animation-delay: 0.6s">U</span><span class="char" style="animation-delay: 0.7s">S</span><span class="char" style="animation-delay: 0.8s">D</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="motion-tile">
+          <div>
+            <div class="motion-tile-label">Motion 03</div>
+            <div class="motion-tile-name">Privacy Bars Dissolve</div>
+            <p class="motion-tile-desc">Horizontal bars cover the headline like a classified document. They retract from the left. Information, declassified.</p>
+          </div>
+          <div class="motion-demo">
+            <div class="bars-demo">
+              <div class="bars-text">Selective disclosure.</div>
+              <div class="bars-overlay">
+                <div class="bar" style="animation-delay: 0s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+                <div class="bar" style="animation-delay: 0.4s"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="motion-tile">
+          <div>
+            <div class="motion-tile-label">Motion 04</div>
+            <div class="motion-tile-name">Scan Line</div>
+            <p class="motion-tile-desc">A single phosphor line travels top-to-bottom. The system is reading. The proof is forming. Continuous, ambient, never alarming.</p>
+          </div>
+          <div class="motion-demo">
+            <div class="scan-demo"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ COMPONENTS ============ -->
+    <section>
+      <div class="section-label">07 · Components</div>
+      <h2 class="section-title">A small kit.<br>Used precisely.</h2>
+      <p class="section-lede">Five core components carry 90% of the brand's visual work. Build everything else from these primitives. Don't add ornamentation; the restraint is the design.</p>
+
+      <div class="components-grid">
+
+        <div class="component-tile">
+          <div class="component-meta">Component · CTA</div>
+          <div class="component-name">Bracketed Action</div>
+          <div class="component-stage">
+            <a href="#" class="cta">
+              <span class="corner tl"></span>
+              <span class="corner tr"></span>
+              <span class="corner bl"></span>
+              <span class="corner br"></span>
+              <span>Stay Notified</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="component-tile">
+          <div class="component-meta">Component · Status</div>
+          <div class="component-name">Protocol Pill</div>
+          <div class="component-stage">
+            <div class="status-pill">
+              <span class="dot"></span>
+              <span>Midnight Protocol Active</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-tile">
+          <div class="component-meta">Component · Badge</div>
+          <div class="component-name">Encrypted Tag</div>
+          <div class="component-stage">
+            <div style="display: flex; gap: 12px;">
+              <div class="encrypted-badge">[ Encrypted ]</div>
+              <div class="encrypted-badge" style="border-color: rgba(125,255,206,0.3); color: var(--decrypted)">[ Verified ]</div>
+              <div class="encrypted-badge" style="border-color: rgba(255,92,92,0.3); color: var(--compromised)">[ Frozen ]</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-tile">
+          <div class="component-meta">Component · Card</div>
+          <div class="component-name">Privacy Receipt</div>
+          <div class="component-stage">
+            <div class="privacy-card">
+              <div class="privacy-card-header">
+                <div class="privacy-card-title">Transaction · 0x7f9a</div>
+                <div style="font-family: var(--mono); font-size: 10.5px; color: var(--decrypted); letter-spacing: 0.15em;">VERIFIED</div>
+              </div>
+              <div class="privacy-row"><span class="key">From</span><span class="val redacted">█████████████████</span></div>
+              <div class="privacy-row"><span class="key">To</span><span class="val redacted">█████████████████</span></div>
+              <div class="privacy-row"><span class="key">Amount</span><span class="val redacted">████████</span></div>
+              <div class="privacy-row"><span class="key">Memo</span><span class="val verified">Auditor-readable</span></div>
+              <div class="privacy-row"><span class="key">Proof</span><span class="val">ZK · 0x4d2b…</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ SECRET LAYER ============ -->
+    <section>
+      <div class="section-label">08 · The Secret Layer</div>
+      <h2 class="section-title">The brand<br>has secrets.</h2>
+      <p class="section-lede">Every shieldUSD surface hides interactions you have to discover. Not gimmicks — the brand performing what it sells. People who notice them become evangelists. People who don't, get a clean institutional product. Both audiences served.</p>
+
+      <div class="secret-grid">
+        <div class="secret-tile">
+          <div class="secret-num">Secret 01</div>
+          <div>
+            <div class="secret-name">Burn Timer</div>
+            <p class="secret-desc">A 60-second self-destruct counter pulses in the chrome. When it hits zero, the page redacts itself. Click to restore.</p>
+          </div>
+        </div>
+        <div class="secret-tile">
+          <div class="secret-num">Secret 02</div>
+          <div>
+            <div class="secret-name">Whisper Mode</div>
+            <p class="secret-desc">Type anywhere. Your characters appear at the bottom of the screen as an encrypted whisper, then disappear in five seconds.</p>
+          </div>
+        </div>
+        <div class="secret-tile">
+          <div class="secret-num">Secret 03</div>
+          <div>
+            <div class="secret-name">Fingerprint Scrambler</div>
+            <p class="secret-desc">A HUD element appears briefly: Canvas, WebGL, Fonts, Audio — all redacted. The brand reminds you it's not tracking.</p>
+          </div>
+        </div>
+        <div class="secret-tile">
+          <div class="secret-num">Secret 04</div>
+          <div>
+            <div class="secret-name">Double-Agent Mode</div>
+            <p class="secret-desc">Hold <em>P</em> for two seconds. The entire page inverts — black becomes white. Same brand, opposite world.</p>
+          </div>
+        </div>
+        <div class="secret-tile">
+          <div class="secret-num">Secret 05</div>
+          <div>
+            <div class="secret-name">Steganography</div>
+            <p class="secret-desc">The word MIDNIGHT is embedded in the grid pattern at 0.01 opacity. Visible only when you stare. Most never see it.</p>
+          </div>
+        </div>
+        <div class="secret-tile">
+          <div class="secret-num">Secret 06</div>
+          <div>
+            <div class="secret-name">Mouse Trail Encryption</div>
+            <p class="secret-desc">As you move, encryption noise (<em>0 x ▓ ▒ Z K</em>) trails behind the cursor and decays. Your motion, encrypted in real time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOICE ============ -->
+    <section>
+      <div class="section-label">09 · Voice & Tone</div>
+      <h2 class="section-title">Quiet, technical,<br>certain.</h2>
+      <p class="section-lede">We never sell. We state. The product is too important — and the audience too sophisticated — for excitement. Confidence is in the absence of adjectives. Authority is in the precision of nouns.</p>
+
+      <div class="voice-grid">
+        <div class="voice-block">
+          <h4>Say</h4>
+          <ul class="voice-list do">
+            <li>private by default</li>
+            <li>auditable by design</li>
+            <li>selective disclosure</li>
+            <li>honest by construction</li>
+            <li>confidential settlement</li>
+            <li>regulated issuer</li>
+            <li>encrypted memo</li>
+            <li>proof of solvency</li>
+            <li>institutional confidentiality</li>
+          </ul>
+        </div>
+        <div class="voice-block">
+          <h4>Don't say</h4>
+          <ul class="voice-list dont">
+            <li>anonymous</li>
+            <li>untraceable</li>
+            <li>dark</li>
+            <li>hidden (alone)</li>
+            <li>evasion</li>
+            <li>off the books</li>
+            <li>privacy coin</li>
+            <li>military grade</li>
+            <li>revolutionary / disruptive</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copy-samples">
+        <div class="copy-sample">
+          <div class="copy-context">Tagline · Primary</div>
+          <div class="copy-headline">Privacy by default. Auditable by design.</div>
+        </div>
+        <div class="copy-sample">
+          <div class="copy-context">Tagline · Short</div>
+          <div class="copy-headline">A new standard for confidential settlement.</div>
+        </div>
+        <div class="copy-sample">
+          <div class="copy-context">Hero · Long</div>
+          <div class="copy-headline">The first fiat stablecoin where the chain forgets, the auditor remembers, and you decide who's which.</div>
+        </div>
+        <div class="copy-sample">
+          <div class="copy-context">Investor one-liner</div>
+          <div class="copy-headline">Compliant confidentiality, on Midnight.</div>
+          <p class="copy-body">Issued by a regulated entity. Built on a privacy-first chain. The two things institutional treasury teams have been waiting on, in the same primitive.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CO-MARKS ============ -->
+    <section>
+      <div class="section-label">10 · Co-marks</div>
+      <h2 class="section-title">Standing on<br>three names.</h2>
+      <p class="section-lede">shieldUSD is not a startup. It's a product issued by Moneta Digital, built by W3i Software, on the Midnight network. The footer of every public surface signals all three — quietly.</p>
+
+      <div class="comark-block">
+        <div class="comark-line">
+          Issued by Moneta Digital <span class="div">·</span> Built on Midnight <span class="div">·</span> Tech by W3i Software
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+      <div>shieldUSD · Brand System v0.1 · 2026-04-25</div>
+      <img src="assets/shield-mark.png" alt="">
+      <div>Draft · Internal Review</div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Selective disclosure demo — spotlight follows cursor
+    const demo = document.getElementById('selective-demo');
+    const mask = document.getElementById('selective-mask');
+    if (demo && mask) {
+      demo.addEventListener('mousemove', (e) => {
+        const rect = demo.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        mask.style.background = `radial-gradient(circle 80px at ${x}px ${y}px, transparent 0%, var(--graphite) 100%)`;
+      });
+      demo.addEventListener('mouseleave', () => {
+        mask.style.background = 'var(--graphite)';
+      });
+    }
+
+    // Re-trigger redacted reveal on click
+    const redacted = document.getElementById('redacted-demo');
+    if (redacted) {
+      redacted.addEventListener('click', () => {
+        const chars = redacted.querySelectorAll('.char');
+        chars.forEach((c) => {
+          c.style.animation = 'none';
+          void c.offsetWidth;
+          c.style.animation = '';
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
